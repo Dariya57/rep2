@@ -1,45 +1,44 @@
 import models.Person;
-
 import java.sql.*;
 import java.util.ArrayList;
-
 public class MyApplication {
     public static void main(String[] args) {
-        String connectionString = "jdbc:postgresql://localhost:5432/simpledb";
-        ArrayList<Person> persons = new ArrayList<>();
+        String connectionUrl = "jdbc:postgresql://localhost:5432/postgres";
         Connection con = null;
+        ResultSet rs = null;
+        Statement stmt = null;
+
         try {
+            // Here we load the driver’s class file into memory at the runtime
             Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(connectionString, "postgres", "0000");
 
-            String sql = "SELECT id, name, surname FROM persons ORDER BY id;";
-            Statement stmt = con.createStatement();
+            // Establish the connection
+            con = DriverManager.getConnection(connectionUrl, "postgres", "7777");
 
-            ResultSet rs = stmt.executeQuery(sql);
+            // The object of statement is responsible to execute queries with the database
+            stmt = con.createStatement();
 
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String surname = rs.getString("surname");
-                Person person = new Person(id, name, surname);
-                persons.add(person);
+            // The executeQuery() method of Statement interface is used to execute queries
+            // to the database. This method returns the object of ResultSet that can be
+            // used to get all the records of a table that matches the sql statement
+            rs = stmt.executeQuery("select * from person");
+
+            while (rs.next()) { // Processing the result
+                System.out.println(rs.getInt("id") + " "
+                        + rs.getString("name") + " "
+                        + rs.getString("email"));
             }
-        } catch (SQLException e) {
-            System.out.println("connection error: " + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            System.out.println("driver error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e);
         } finally {
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) {
-                    System.out.println("could not close the connection: " + e.getMessage());
-                }
+            try { // Close connection – clean up system resources
+                rs.close();
+                stmt.close();
+                con.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-        }
-
-        for (Person person : persons) {
-            System.out.println(persons);
         }
     }
+
 }

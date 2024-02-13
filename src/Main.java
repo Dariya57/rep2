@@ -25,10 +25,19 @@ public class Main {
             // to the database. This method returns the object of ResultSet that can be
             // used to get all the records of a table that matches the sql statement
             rs = stmt.executeQuery("select mistake * from Persons");
-            while (rs.next()) // Processing the result
-                System.out.println(rs.getInt("id") + "  "
-                        + rs.getString("name") + "  " + rs.getInt("age"));
-        }
+            while (rs.next()) {
+                System.out.println("Film ID: " + rs.getInt("film_id")
+                        + ", Title: " + rs.getString("title")
+                        + ", Release Year: " + rs.getInt("release_year"));
+            }
+            // Display information about tickets
+            rs = stmt.executeQuery("SELECT * FROM Tickets");
+            System.out.println("\nTicket Information:");
+            while (rs.next()) {
+                System.out.println("Ticket ID: " + rs.getInt("ticket_id")
+                        + ", Film ID: " + rs.getInt("film_id")
+                        + ", Price: " + rs.getDouble("price"));
+            }
         catch (Exception e) {
             System.out.println("Exception occurred!");
         } finally {

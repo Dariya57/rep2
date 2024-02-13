@@ -41,10 +41,12 @@ public class Main {
         catch (Exception e) {
             System.out.println("Exception occurred!");
         } finally {
-            try { // Close connection - clean up the system resources
-                con.close();
+            try { // Close connection - clean up system resources
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
             } catch (Exception e) {
-                System.out.println("Exception occurred!");
+                System.out.println("Exception occurred while closing resources: " + e.getMessage());
             }
         }
         System.out.println("Finished!");

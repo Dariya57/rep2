@@ -11,9 +11,9 @@ public class MyApplication {
         try {
             // Here we load the driver’s class file into memory at the runtime
             Class.forName("org.postgresql.Driver");
-
+141
             // Establish the connection
-            con = DriverManager.getConnection(connectionUrl, "postgres", "7777");
+            con = DriverManager.getConnection(connectionUrl, "postgres", "457810nursem");
 
             // The object of statement is responsible to execute queries with the database
             stmt = con.createStatement();
